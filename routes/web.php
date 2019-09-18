@@ -12,4 +12,6 @@
 */
 
 
-Route::post('/pc/import', 'Admin\ImportController@import');//登录
+Route::post('/pc/import', 'Admin\ImportController@import');//导入
+Route::post('/pc/login', 'Admin\LoginController@login');//登录
+Route::post('/pc/userlist', 'Admin\LoginController@userlist');//用户列表
