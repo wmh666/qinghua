@@ -31,5 +31,39 @@ class LoginController extends Controller {
     }
 
     //修改权限
+    public function uprole(Request $Request){
+        $data = $Request->all();
+        if(empty($data['id']) || empty($data['roleid'])){
+            rData(errorcode()['6']['code'],errorcode()['6']['msg'],[]);
+        }
+        $res = Login::uprole($data);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg'],[]);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg'],[]);
+    }
+
+    //权限列表
+    public function rolelist(){
+        $list = Login::rolelist();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    //分配账号
+    public function useradd(Request $Request){
+        $data = $Request->all();
+        if(empty($data['name']) || empty($data['tel']) || empty($data['role'])){
+            rData(errorcode()['6']['code'],errorcode()['6']['msg'],[]);
+        }
+        $Mobile = isMobile($data['tel']);
+        if(!$Mobile){
+            rData(errorcode()['18']['code'],errorcode()['18']['msg'],[]);
+        }
+        $res = Login::useradd($data);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg'],[]);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg'],[]);
+    }
     
 }

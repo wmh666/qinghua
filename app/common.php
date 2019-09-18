@@ -36,7 +36,8 @@
             '14'=>['code'=>214,'msg'=>'稍后重试'],
             '15'=>['code'=>215,'msg'=>'验证码错误'],
             '16'=>['code'=>216,'msg'=>'两次密码不一致'],
-            '17'=>['code'=>217,'msg'=>'账号已存在']
+            '17'=>['code'=>217,'msg'=>'账号已存在'],
+            '18'=>['code'=>218,'msg'=>'手机号格式不正确']
         ];
         return $data;
     }
@@ -48,4 +49,11 @@
             "data" => $data,
         );
         echo json_encode($value);die;
+    }
+
+    function isMobile($mobile) {
+        if (!is_numeric($mobile)) {
+            return false;
+        }
+        return preg_match('#^1[3,4,5,7,8,9]{1}[\d]{9}$#', $mobile) ? true : false;
     }

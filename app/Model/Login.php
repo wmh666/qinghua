@@ -47,5 +47,23 @@ class Login extends Model{
     }
 
     //修改权限
-    
+    public static function uprole($data){
+        $res = DB::table('userinfo')->where('id',$data['id'])->update(['role'=>$data['roleid']]);
+        return $res;
+    }
+
+    //权限列表
+    public static function rolelist(){
+        $list = DB::table('role')->where('id','<>',1)->get();
+        return $list;
+    }
+
+    //分配账号
+    public static function useradd($data){
+        date_default_timezone_set ('PRC'); 
+        $data['password'] = MD5(123456);
+        $data['addtime'] = date('Y-m-d H:i:s');
+        $res = DB::table('userinfo')->insert($data);
+        return $res;
+    }
 }
