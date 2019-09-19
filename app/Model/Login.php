@@ -66,4 +66,20 @@ class Login extends Model{
         $res = DB::table('userinfo')->insert($data);
         return $res;
     }
+
+    //找回密码验证信息
+    public static function relist($data){
+        $res = DB::table('userinfo')->where('tel',$data['tel'])->where('name',$data['name'])->first();
+        if($res){
+            return 1;
+        }else{
+            return 2;
+        }
+    }
+    //找回密码
+    public static function repwd ($data){
+        $res = DB::table('userinfo')->where('tel',$data['tel'])->where('name',$data['name'])->update(['password'=>$data['new_pwd']]);
+        return $res;
+    }
+
 }

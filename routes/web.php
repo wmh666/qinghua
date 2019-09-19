@@ -18,3 +18,5 @@ Route::post('/pc/userlist', 'Admin\LoginController@userlist');//用户列表
 Route::post('/pc/uprole', 'Admin\LoginController@uprole');//修改权限
 Route::post('/pc/rolelist', 'Admin\LoginController@rolelist');//权限list
 Route::post('/pc/ins', 'Admin\LoginController@useradd');//用户添加
+Route::post('/pc/relist', 'Admin\LoginController@relist');//验证找回密码信息
+Route::post('/pc/repwd', 'Admin\LoginController@repwd');//找回密码

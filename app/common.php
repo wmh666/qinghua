@@ -42,7 +42,7 @@
         return $data;
     }
 
-    function rData($state,$message,$data = ' '){
+    function rData($state,$message,$data = []){
         $value = array(
             "state" => $state,
             "msg" => $message,
