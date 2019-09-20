@@ -20,3 +20,5 @@ Route::post('/pc/rolelist', 'Admin\LoginController@rolelist');//权限list
 Route::post('/pc/ins', 'Admin\LoginController@useradd');//用户添加
 Route::post('/pc/relist', 'Admin\LoginController@relist');//验证找回密码信息
 Route::post('/pc/repwd', 'Admin\LoginController@repwd');//找回密码
+Route::post('/pc/VerIns', 'Admin\VerController@VerificationIns');//验证add
+Route::post('/pc/Verlist', 'Admin\VerController@VerificationList');//验证list
