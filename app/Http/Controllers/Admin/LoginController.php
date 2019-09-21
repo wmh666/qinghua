@@ -66,23 +66,6 @@ class LoginController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
     }
 
-    //找回姓名验证信息
-    public function relist(Request $Request){
-        $data = $Request->all();
-        if(empty($data['name']) || empty($data['tel'])){
-            rData(errorcode()['6']['code'],errorcode()['6']['msg']);
-        }
-        $Mobile = isMobile($data['tel']);
-        if(!$Mobile){
-            rData(errorcode()['18']['code'],errorcode()['18']['msg']);
-        }
-        $res = Login::relist($data);
-        if($res == 1)
-            rData(successcode()['1']['code'],successcode()['1']['msg']);
-        else
-            rData(errorcode()['10']['code'],errorcode()['10']['msg']);
-        
-    }
 
     //找回密码
     public function repwd(Request $Request){
@@ -98,6 +81,10 @@ class LoginController extends Controller {
         $Mobile = isMobile($data['tel']);
         if(!$Mobile){
             rData(errorcode()['18']['code'],errorcode()['18']['msg']);
+        }
+        $res = Login::relist($data);
+        if($res == 1){
+            rData(errorcode()['3']['code'],errorcode()['3']['msg']);
         }
         $res = Login::repwd($data);
         if($res)

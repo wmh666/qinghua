@@ -28,5 +28,26 @@ class Ver extends Model{
        return $tree;
     }
 
+    public static function information($data){
+        $data['addtime'] = date('Y-m-d H:i:s');
+        $res = DB::table('information')->insert($data);
+        return $res;
+    }
+
+    public static function downloadfile($id){
+        $list = DB::table('information')->where('id',$id)->value('path');
+        return $list;
+    }
+
+    //列表
+    public static function inflist($data){
+        $list = DB::table('information');
+        if(!empty($data['vid1']) || !empty($data['vid2']) || !empty($data['vid3'])){
+           $list = $list->where('vid1',$data['vid1'])->where('vid2',$data['vid2'])->where('vid3',$data['vid3']);
+        }
+        $list = $list->select('id','ordername','type','scene','server','addtime')->paginate(6);
+        return $list;
+    }
+
     
 }

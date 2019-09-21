@@ -22,3 +22,7 @@ Route::post('/pc/relist', 'Admin\LoginController@relist');//验证找回密码�
 Route::post('/pc/repwd', 'Admin\LoginController@repwd');//找回密码
 Route::post('/pc/VerIns', 'Admin\VerController@VerificationIns');//验证add
 Route::post('/pc/Verlist', 'Admin\VerController@VerificationList');//验证list
+Route::post('/pc/inf', 'Admin\VerController@information');//信息添加
+Route::post('/pc/file', 'Admin\VerController@addfile');//文件添加
+Route::post('/pc/download', 'Admin\VerController@downloadfile');//文件xiazai
+Route::post('/pc/inflist', 'Admin\VerController@inflist');//信息列表

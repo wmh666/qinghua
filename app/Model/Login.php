@@ -27,12 +27,12 @@ class Login extends Model{
             return 3;
         }
 
-        return  self::findlist($user->id,$user->role);
+        return  self::findlist($user->tel,$user->role);
     }
 
     //个人信息
-    public static function findlist($id,$role){
-        $user = DB::table('userinfo')->where('id',$id)->where('role',$role)->select('id','tel','role','addtime','name')->first();
+    public static function findlist($tel,$role){
+        $user = DB::table('userinfo')->where('tel',$tel)->where('role',$role)->select('id','tel','role','addtime','name')->first();
         return $user;
     }
 
@@ -70,10 +70,8 @@ class Login extends Model{
     //找回密码验证信息
     public static function relist($data){
         $res = DB::table('userinfo')->where('tel',$data['tel'])->where('name',$data['name'])->first();
-        if($res){
+        if(empty($res)){
             return 1;
-        }else{
-            return 2;
         }
     }
     //找回密码
