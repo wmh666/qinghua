@@ -26,3 +26,4 @@ Route::post('/pc/inf', 'Admin\VerController@information');//信息添加
 Route::post('/pc/file', 'Admin\VerController@addfile');//文件添加
 Route::post('/pc/download', 'Admin\VerController@downloadfile');//文件xiazai
 Route::post('/pc/inflist', 'Admin\VerController@inflist');//信息列表
+Route::post('/pc/listimport', 'Admin\ImportController@listimport');//anli列表

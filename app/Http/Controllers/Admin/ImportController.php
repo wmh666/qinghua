@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Model\Import;
 use Illuminate\Http\Request;
 use Excel;
 use Illuminate\Support\Facades\DB;
@@ -77,13 +78,15 @@ class ImportController extends Controller {
                         $item[] = $arr;
                     }
             }
-            $res =  DB::table('case')->insert($item);
+            DB::table('case')->insert($item);
             rData(successcode()['1']['code'],successcode()['1']['msg']);
         });
     }
 
     //案例列表
     public function listimport(Request $requests){
-        
+        $list = Import::listimport();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
+
 }
