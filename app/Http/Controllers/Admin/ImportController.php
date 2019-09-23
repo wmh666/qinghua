@@ -89,4 +89,17 @@ class ImportController extends Controller {
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
+    //上传文件
+    public function importfile(Request $requests){
+        $data = $requests->all();
+        if(empty($data)){
+            rData(errorcode()['6']['code'],errorcode()['6']['msg']);
+        }
+        $res = DB::table('case')->where('id',$data['id'])->update(['img'=>$data['img']]);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg']);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg']);
+    }
+
 }
