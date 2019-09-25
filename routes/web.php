@@ -27,4 +27,11 @@ Route::post('/pc/file', 'Admin\VerController@addfile');//文件添加
 Route::post('/pc/download', 'Admin\VerController@downloadfile');//文件xiazai
 Route::post('/pc/inflist', 'Admin\VerController@inflist');//信息列表
 Route::post('/pc/listimport', 'Admin\ImportController@listimport');//anli列表
-Route::post('/pc/importfile', 'Admin\ImportController@importfile');//anli列表
+Route::post('/pc/importfile', 'Admin\ImportController@importfile');//anli列表 上传文件
+Route::post('/pc/importtype', 'Admin\ImportController@importtype');//anli搜索添加
+Route::post('/pc/gbhy', 'Admin\ImportController@gbhy');//所属行业
+Route::post('/pc/country', 'Admin\ImportController@country');//国家
+Route::post('/pc/province', 'Admin\ImportController@province');//省市
+Route::post('/pc/typelist', 'Admin\ImportController@typelist');//搜索搜索
+Route::post('/pc/aa', 'Admin\ImportController@aa');//搜索搜索
+

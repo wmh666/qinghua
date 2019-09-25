@@ -85,7 +85,8 @@ class ImportController extends Controller {
 
     //案例列表
     public function listimport(Request $requests){
-        $list = Import::listimport();
+        $data = $requests->all();
+        $list = Import::listimport($data);
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
@@ -102,4 +103,71 @@ class ImportController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
     }
 
+    //1 企业名称,2企业国家所属,3 自我矛盾的服务技术参数,4 发明原理,5 分离原理,6 进化原则,7使能技术
+    //搜索添加
+    public function importtype(Request $requests){
+        $data = $requests->all();
+        if(empty($data['name']) || empty($data['type']) ){
+            rData(errorcode()['6']['code'],errorcode()['6']['msg']);
+        }
+        $res =  DB::table('import_type')->insert($data);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg']);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg']);
+    }
+
+    //所属行业
+    public function gbhy(){
+        $list =  DB::table('gbhy')->select('hydm','hymc')->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    //国家
+    public function country(){
+        $list =  DB::table('country')->select('zh_name as country')->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    //省市
+    public function province(Request $request){
+        $id = $request->input('cityid');
+        $list = DB::table('city');
+        if(!empty($id)){
+            $list = $list->where('pid',$id)->where('type',2);
+        }else{
+            $list = $list->where('type',1);
+        }
+        $list = $list->select('id as cityid','cityname')->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    //搜索哟条件
+    public function typelist(Request $request){
+        $id = $request->input('id');
+        $list = DB::table('import_type')->where('type',$id)->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    // public function aa(Request $requests){
+    //     set_time_limit(0);
+    //     $file = $requests->file('file');
+    //     $filePath = $file->getRealPath();
+    //     excel::load($filePath, function($reader) {
+    //         $data = $reader->all();
+    //         $list = json($data);
+    //         unset($list[0]);
+    //         unset($list[1][0]);
+    //         $item = [];
+    //         foreach($list[1] as $k=>$v){
+    //             $arr = [];
+    //             $arr['code']=$v[0];
+    //             $arr['pid_code']=$v[1];
+    //             $arr['type']=$v[2];
+    //             $item[] = $arr;
+    //         }
+    //         $list = DB::table('gbhy')->insert($item);
+            
+    //     });
+    // }
 }
