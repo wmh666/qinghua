@@ -149,25 +149,35 @@ class ImportController extends Controller {
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
-    // public function aa(Request $requests){
-    //     set_time_limit(0);
-    //     $file = $requests->file('file');
-    //     $filePath = $file->getRealPath();
-    //     excel::load($filePath, function($reader) {
-    //         $data = $reader->all();
-    //         $list = json($data);
-    //         unset($list[0]);
-    //         unset($list[1][0]);
-    //         $item = [];
-    //         foreach($list[1] as $k=>$v){
-    //             $arr = [];
-    //             $arr['code']=$v[0];
-    //             $arr['pid_code']=$v[1];
-    //             $arr['type']=$v[2];
-    //             $item[] = $arr;
-    //         }
-    //         $list = DB::table('gbhy')->insert($item);
-            
-    //     });
-    // }
+    public function aa(Request $requests){
+       echo  $_SERVER["REMOTE_ADDR"];
+    }
+
+    //map,swot分析
+    public function map(Request $requests){
+        date_default_timezone_set ('PRC'); 
+        $data = $requests->all();
+        if(empty($data['img']) || empty($data['type']) || empty($data['uid'])){
+            rData(errorcode()['6']['code'],errorcode()['6']['msg']);
+        }
+        $data['addtime'] = date('Y-m-d H:i:s');
+        $res = DB::table('map')->insert($data);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg']);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg']);
+
+    }
+    //历史map,swot
+    public function mapHisory (Request $requests){
+        $data = $requests->all();
+        $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime')->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    public function mapPic(Request $requests){
+        $id = $requests->input('id');
+        $list = DB::table('map')->where('id',$id)->select('img')->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
 }
