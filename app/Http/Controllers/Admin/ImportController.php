@@ -168,7 +168,7 @@ class ImportController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
 
     }
-    //历史map,swot
+    //历史map,swot 服务
     public function mapHisory (Request $requests){
         $data = $requests->all();
         $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime')->get();
