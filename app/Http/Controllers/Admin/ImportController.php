@@ -149,10 +149,9 @@ class ImportController extends Controller {
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
-    public function aa(Request $requests){
-       echo  $_SERVER["REMOTE_ADDR"];
+    public function aa(Request $request){
+        
     }
-
     //map,swot分析
     public function map(Request $requests){
         date_default_timezone_set ('PRC'); 
@@ -179,5 +178,18 @@ class ImportController extends Controller {
         $id = $requests->input('id');
         $list = DB::table('map')->where('id',$id)->select('img')->get();
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+    }
+
+    //表格导出
+    public function export(Request $request){
+        $data = $request->all();
+        $header = $data['header'];
+        $count = count($data['arr']);
+        for($i=1; $i<=ceil($count); $i++){
+            $start = ($i*2-2+1)-1;
+            $end = 2;        
+            $article = array_slice($data['arr'],$start,$end);
+            csv_export($article,$header,'test.csv',$i);
+        }
     }
 }
