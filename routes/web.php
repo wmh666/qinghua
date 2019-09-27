@@ -29,7 +29,7 @@ Route::post('/pc/inflist', 'Admin\VerController@inflist');//信息列表
 Route::post('/pc/listimport', 'Admin\ImportController@listimport');//anli列表
 Route::post('/pc/importfile', 'Admin\ImportController@importfile');//anli列表 上传文件
 Route::post('/pc/importtype', 'Admin\ImportController@importtype');//anli搜索添加
-Route::post('/pc/gbhy', 'Admin\ImportController@gbhy');//所属行业
+Route::post('/pc/gbhy', 'Admin\ImportController@gbhy');//所属行业 门类
 Route::post('/pc/country', 'Admin\ImportController@country');//国家
 Route::post('/pc/province', 'Admin\ImportController@province');//省市
 Route::post('/pc/typelist', 'Admin\ImportController@typelist');//搜索搜索
@@ -38,4 +38,10 @@ Route::post('/pc/map', 'Admin\ImportController@map');//map
 Route::post('/pc/mapHisory', 'Admin\ImportController@mapHisory');//maplist
 Route::post('/pc/mappic', 'Admin\ImportController@mapPic');//mappic  生成图片上传
 Route::post('/pc/export', 'Admin\ImportController@export');//export 导出
+Route::post('/pc/qfd', 'Admin\ImportController@qfd');//QDF
+Route::post('/pc/qfdover', 'Admin\ImportController@qfdover');//QDF 交叉关系
+Route::post('/pc/qfdlist', 'Admin\ImportController@qfdlist');//QDF list
+Route::post('/pc/gbhydata', 'Admin\ImportController@gbhydata');// 所属行业 大类，中类
+Route::post('/pc/casecount', 'Admin\ImportController@casecount');// 案例统计
+
 

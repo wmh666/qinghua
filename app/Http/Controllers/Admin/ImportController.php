@@ -6,6 +6,7 @@ use App\Model\Import;
 use Illuminate\Http\Request;
 use Excel;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\input;
 class ImportController extends Controller {
 
     public function import(Request $requests){
@@ -117,9 +118,10 @@ class ImportController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
     }
 
-    //所属行业
+    //所属行业大类
     public function gbhy(){
-        $list =  DB::table('gbhy')->select('hydm','hymc')->get();
+        $where = ['A','B','C','D','E'];
+        $list =  DB::table('gbhy')->select('code','type')->whereIn('code',$where)->get();
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
@@ -152,14 +154,16 @@ class ImportController extends Controller {
     public function aa(Request $request){
         
     }
-    //map,swot分析
+    //0 swot分析 , 1 共情图 ，2 服务 3 QFD 4商业模式
     public function map(Request $requests){
         date_default_timezone_set ('PRC'); 
+        $data=Input::all();
         $data = $requests->all();
-        if(empty($data['img']) || empty($data['type']) || empty($data['uid'])){
+        if(empty($data['img']) || !is_numeric($data['type']) || empty($data['uid'])){
             rData(errorcode()['6']['code'],errorcode()['6']['msg']);
         }
-        $data['addtime'] = date('Y-m-d H:i:s');
+        $date = date('Y-m-d H:i:s');
+        $data['addtime'] = "$date";
         $res = DB::table('map')->insert($data);
         if($res)
             rData(successcode()['1']['code'],successcode()['1']['msg']);
@@ -167,7 +171,7 @@ class ImportController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
 
     }
-    //历史map,swot 服务
+    //历史 0 swot分析 , 1 共情图 ，2 服务 3 QFD 4 商业模式
     public function mapHisory (Request $requests){
         $data = $requests->all();
         $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime')->get();
@@ -192,4 +196,56 @@ class ImportController extends Controller {
             csv_export($article,$header,'test.csv',$i);
         }
     }
+
+    //QFD 1html
+    public function qfd(Request $request){
+        date_default_timezone_set ('PRC'); 
+        $data = $request->all();
+        $data['addtime'] = date('Y-m-d H:i:s');
+        $res = DB::table('html')->insertGetId($data);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg'],$res);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg']);
+
+    }
+
+     //QFD 交叉关系
+     public function qfdover(Request $request){
+        $data = $request->all();
+        $res = DB::table('over')->insertGetId($data);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg']);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg']);
+     }
+
+     //QFD 交叉关系 临时html 关系
+     public function qfdlist(Request $request){ 
+        $data = $request->all();
+        $list['html'] = DB::table('html')->where('id',$data['html_id'])->where('uid',$data['uid'])->select('html')->get();
+        if(!empty($data['title'])){
+            $keyword = $data['title'];
+            $list['over'] = DB::table('over')
+                    ->select('title','fraction','relationship')
+                    ->where('uid',$data['uid'])
+                    ->where(function ($query) use ($keyword){
+                        $query->where('title',$keyword)->orWhere('relationship',$keyword);
+                    })->get();
+        }
+         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+     }
+
+     public function gbhydata(Request $request){
+        $code = $request->input('code');
+        $list = DB::table('gbhy')->select('code','type')->where('pid_code',$code)->get();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+     }
+
+     //案例tsing_case
+     public function casecount(Request $request){
+        $data = $request->all();
+        $list = Import::casecount($data);
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+     }
 }
