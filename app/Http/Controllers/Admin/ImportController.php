@@ -155,10 +155,9 @@ class ImportController extends Controller {
         
     }
     //0 swot分析 , 1 共情图 ，2 服务 3 QFD 4商业模式
-    public function map(Request $requests){
+    public function map(Request $request){
         date_default_timezone_set ('PRC'); 
         $data=Input::all();
-        $data = $requests->all();
         if(empty($data['img']) || !is_numeric($data['type']) || empty($data['uid'])){
             rData(errorcode()['6']['code'],errorcode()['6']['msg']);
         }
@@ -174,7 +173,7 @@ class ImportController extends Controller {
     //历史 0 swot分析 , 1 共情图 ，2 服务 3 QFD 4 商业模式
     public function mapHisory (Request $requests){
         $data = $requests->all();
-        $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime')->get();
+        $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime','id')->get();
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
