@@ -66,4 +66,27 @@ class Import extends Model
         }
         return $data;
     }
+
+    public static function principle($data){
+
+        $data['data'] = ['抽取','合并（需求属性合并）','合并（需求属性合并）'];
+        $list = DB::table('case')
+            ->whereIn($data['surface'],$data['data'])
+            ->select('describe','impletime','effect','id');
+            if(!empty($data['industry'])){
+                $in = $data['industry'];
+                $list = $list->whereraw('substr(industry,1,3) in '."('$in')");
+            }else if(!empty($data['country'])){
+                $list = $list->where('country',$data['country']);
+            }else if(!empty($data['use'])){
+                $list = $list->where('use',$data['use']);
+            }else if(!empty($data['keyword'])){
+                $keyword = $data['keyword'];
+                $list = $list ->where(function ($query) use ($keyword){
+                    $query->where('describe',$keyword)->orWhere('effect',$keyword);
+                })->get();
+            }
+            $list = $list ->paginate(10);
+        return $list;
+    }
 }

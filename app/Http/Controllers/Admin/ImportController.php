@@ -247,4 +247,13 @@ class ImportController extends Controller {
         $list = Import::casecount($data);
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
      }
+
+     //发明原理
+     public function principle(Request $request){
+         $data = $request->all();
+         $list = Import::principle($data);
+         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+        
+     }
+
 }
