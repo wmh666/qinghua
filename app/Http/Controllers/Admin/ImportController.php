@@ -120,9 +120,26 @@ class ImportController extends Controller {
 
     //所属行业大类
     public function gbhy(){
-        $where = ['A','B','C','D','E'];
-        $list =  DB::table('gbhy')->select('code','type')->whereIn('code',$where)->get();
-        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+        $list =  DB::table('gbhy')
+        ->whereraw('length(pid_code)<=3')
+        ->select('code','type as label','pid_code','type as value')->get();
+        $data = $this->Listpid($list);
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$data);
+    }
+
+    public function Listpid($list,$pid=0){
+        $tree = [];
+        $list = json($list);
+        foreach ($list as $k=>$v){
+            if ($v['pid_code'] == $pid){
+                $v['children'] = $this->Listpid($list,$v['code']);
+                if(empty($v['children'])){
+                    unset($v['children']);
+                }
+                $tree[] = $v;
+            }
+       }
+       return $tree;
     }
 
     //国家
