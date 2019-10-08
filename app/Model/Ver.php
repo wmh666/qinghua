@@ -11,7 +11,7 @@ class Ver extends Model{
     }
 
     public static function VerificationList(){
-        $res = DB::table('verification')->select('name as label','pid as value','id')->get();
+        $res = DB::table('verification')->select('name as label','pid','id as value')->get();
         $res = self::Listpid($res,0);
         return $res;
     }
@@ -20,8 +20,8 @@ class Ver extends Model{
         $tree = [];
         $arr = json($arr);
         foreach ($arr as $k=>$v){
-            if ($v['value'] == $pid){
-                $v['children'] = self::Listpid($arr,$v['id']);
+            if ($v['pid'] == $pid){
+                $v['children'] = self::Listpid($arr,$v['value']);
                 if(empty($v['children'])){
                     unset($v['children']);
                 }
@@ -45,9 +45,15 @@ class Ver extends Model{
     //列表
     public static function inflist($data){
         $list = DB::table('information');
-        if(!empty($data['vid1']) || !empty($data['vid2']) || !empty($data['vid3'])){
-           $list = $list->where('vid1',$data['vid1'])->where('vid2',$data['vid2'])->where('vid3',$data['vid3']);
+        if(is_numeric($data['vid1'])){
+           $list = $list->where('vid1',$data['vid1']);
         }
+        if(is_numeric($data['vid2'])){
+            $list = $list->where('vid2',$data['vid2']);
+         }
+         if(is_numeric($data['vid3'])){
+            $list = $list->where('vid3',$data['vid3']);
+         }
         $list = $list->select('id','ordername','type','scene','server','addtime')->paginate(6);
         return $list;
     }

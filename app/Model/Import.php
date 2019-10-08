@@ -50,11 +50,12 @@ class Import extends Model
     }
 
     public static function principle($data){
-        //$data['data'] = ['抽取','合并（需求属性合并）','合并（需求属性合并）'];
-        $data['data'] = explode(',',$data['data']);
         $list = DB::table('case')
-            ->whereIn($data['surface'],$data['data'])
             ->select('describe','impletime','effect','id'); //默认搜索 /分离原理 /进化法则
+            if(!empty($data['surface'])){
+                $data['data'] = explode(',',$data['data']);
+                $list = $list->whereIn($data['surface'],$data['data']);
+            }
             if(!empty($data['industry'])){
                 $in = $data['industry'];//所属行业
                 $list = $list->whereraw('substr(industry,1,3) in '."('$in')");
@@ -71,7 +72,7 @@ class Import extends Model
                     $query->where('describe',$keyword)->orWhere('effect',$keyword);
                 });
             }
-            $list = $list->paginate(10);
+        isset($data['limit']) ? $list = $list->paginate($data['limit']) : $list = $list->paginate(10) ;
         return $list;
     }
 
