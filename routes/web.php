@@ -43,6 +43,8 @@ Route::post('/pc/qfdover', 'Admin\ImportController@qfdover');//QDF 交叉关系
 Route::post('/pc/qfdlist', 'Admin\ImportController@qfdlist');//QDF list
 Route::post('/pc/gbhydata', 'Admin\ImportController@gbhydata');// 所属行业 大类，中类
 Route::post('/pc/casecount', 'Admin\ImportController@casecount');// 案例统计
-Route::post('/pc/principle', 'Admin\ImportController@principle');// 原理
+Route::post('/pc/principle', 'Admin\ImportController@principle');// 各种原理
+Route::post('/pc/principlelist', 'Admin\ImportController@principlelist');// 各种原理详情
+Route::GET('/pc/principleExport', 'Admin\ImportController@principleExport');// 各种原理导出
 
 

@@ -10,24 +10,6 @@ class Import extends Model
     public static function listimport($data){
 
         $list = DB::table('case');
-        if(!empty($data['extername'])){
-            $list = $list->where('extername',$data['extername']);
-        }else if(!empty($data['country'])){
-            $list = $list->where('country',$data['country']);
-        }else if(!empty($data['self'])){
-            $list = $list->where('self',$data['self']);
-        }else if(!empty($data['invention'])){
-            $list = $list->where('invention',$data['invention']);
-        }else if(!empty($data['separate'])){
-            $list = $list->where('separate',$data['separate']);
-        }else if(!empty($data['rule'])){
-            $list = $list->where('rule',$data['rule']);
-        }else if(!empty($data['use'])){
-            $list = $list->where('use',$data['use']);
-        }else if(!empty($data['industry'])){
-            $like = $data['industry'];
-            $list = $list->where('industry','like',"'%$like%'");
-        }
         $list = $list ->paginate(10);
         $list = json($list);
         foreach($list['data'] as $k=>$v){
@@ -49,13 +31,13 @@ class Import extends Model
             $list = $list->whereraw('substr(industry,1,3) in '."('$in')");
         }else if(!empty($data['country'])){
             $list = $list->where('country',$data['country']);
-        }else if(!empty($data['type']) && $data['type'] == 1 && !empty($data['invention'])){
+        }else if(!empty($data['invention'])){
             $list = $list->where('invention',$data['invention']);
-        }else if(!empty($data['type']) && $data['type'] == 1 && !empty($data['separate'])){
+        }else if(!empty($data['separate'])){
             $list = $list->where('separate',$data['separate']);
-        }else if(!empty($data['type']) && $data['type'] == 1 && !empty($data['rule'])){
+        }else if(!empty($data['rule'])){
             $list = $list->where('rule',$data['rule']);
-        }else if(!empty($data['type']) && $data['type'] == 1 && !empty($data['use'])){
+        }else if(!empty($data['use'])){
             $list = $list->where('use',$data['use']);
         }
         $list = $list->groupby('impletime')->get();
@@ -69,24 +51,32 @@ class Import extends Model
 
     public static function principle($data){
 
-        $data['data'] = ['抽取','合并（需求属性合并）','合并（需求属性合并）'];
+        //$data['data'] = ['抽取','合并（需求属性合并）','合并（需求属性合并）']; 
         $list = DB::table('case')
             ->whereIn($data['surface'],$data['data'])
-            ->select('describe','impletime','effect','id');
+            ->select('describe','impletime','effect','id'); //默认搜索 /分离原理 /进化法则
             if(!empty($data['industry'])){
-                $in = $data['industry'];
+                $in = $data['industry'];//所属行业
                 $list = $list->whereraw('substr(industry,1,3) in '."('$in')");
             }else if(!empty($data['country'])){
-                $list = $list->where('country',$data['country']);
+                $list = $list->where('country',$data['country']); //国家
             }else if(!empty($data['use'])){
-                $list = $list->where('use',$data['use']);
-            }else if(!empty($data['keyword'])){
+                $list = $list->where('use',$data['use']); //使用技能
+            }else if(!empty($data['self'])){
+                $list = $list->where('self',$data['self']); //自我矛盾的服务技术参数
+            }
+            else if(!empty($data['keyword'])){
                 $keyword = $data['keyword'];
                 $list = $list ->where(function ($query) use ($keyword){
                     $query->where('describe',$keyword)->orWhere('effect',$keyword);
                 })->get();
             }
             $list = $list ->paginate(10);
+        return $list;
+    }
+
+    public static function principlelist($id){
+        $list = DB::table('case')->where('id',$id)->select('self','invention','separate','rule','use','id')->first();
         return $list;
     }
 }

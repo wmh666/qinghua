@@ -104,7 +104,7 @@ class ImportController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
     }
 
-    //1 企业名称,2企业国家所属,3 自我矛盾的服务技术参数,4 发明原理,5 分离原理,6 进化原则,7使能技术
+    //1 创新理论 2矛盾类型 3发明原理 4分离原理 5进化法则6使能技术 7改善/恶化(技术参数)
     //搜索添加
     public function importtype(Request $requests){
         $data = $requests->all();
@@ -161,11 +161,29 @@ class ImportController extends Controller {
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
-    //搜索哟条件
-    public function typelist(Request $request){
-        $id = $request->input('id');
-        $list = DB::table('import_type')->where('type',$id)->get();
-        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+
+    public function typelist(){
+        $list = DB::table('import_type')->get();
+        $list = json($list);
+        $data = [];
+        foreach($list as $k=>$v){
+            if($v['type'] == 1){
+                $data['theory'][$k] = $v;
+            } else if($v['type'] == 2){
+                $data['type'][$k] = $v;
+            }else if($v['type'] == 3){
+                $data['invention'][$k] = $v;
+            }else if($v['type'] == 4){
+                $data['separate'][$k] = $v;
+            }else if($v['type'] == 5){
+                $data['rule'][$k] = $v;
+            }else if($v['type'] == 6){
+                $data['use'][$k] = $v;
+            }else{
+                $data['server'][$k] = $v;
+            }
+        }
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$data);
     }
 
     public function aa(Request $request){
@@ -265,12 +283,53 @@ class ImportController extends Controller {
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
      }
 
-     //发明原理
+     //发明原理/分离原理/进化法则
      public function principle(Request $request){
          $data = $request->all();
          $list = Import::principle($data);
          rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
-        
      }
+
+     //案例详情
+     public function principlelist(Request $request){
+        $id = $request->input('id');
+        $list = Import::principlelist($id);
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
+     }
+
+     //表格导出
+    public function principleExport(Request $request){
+        $id = $request->input('id');
+        $header = [
+            '编号',
+            '姓名',
+            '企业名称',
+            '所属国家',
+            '所属行业',
+            '案例描述',
+            '遇到问题',
+            '原理运营方式',
+            '运营措施',
+            '矛盾类型',
+            '改善的服务技术参数',
+            '恶化的服务技术参数',
+            '自我矛盾的服务技术参数',
+            '创新理论',
+            '发明原理',
+            '分离原理',
+            '进化规则',
+            '使用技能',
+            '实施时间',
+            '实施积极效果',
+            '实施负面效果',
+            '下线时间',
+            '下线原因',
+            '下线代替实施',
+            '案例来源'
+        ];
+        $list = DB::table('case')->where('id',$id)->get();
+        $list = json($list);
+        csv_export($list,$header,'test.csv',0);
+    }
 
 }
