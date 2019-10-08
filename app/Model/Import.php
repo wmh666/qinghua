@@ -65,13 +65,19 @@ class Import extends Model
                 $list = $list->where('use',$data['use']); //使用技能
             }else if(!empty($data['self'])){
                 $list = $list->where('self',$data['self']); //自我矛盾的服务技术参数
-            }
-            else if(!empty($data['keyword'])){
+            }else if(!empty($data['keyword'])){
                 $keyword = $data['keyword'];
                 $list = $list ->where(function ($query) use ($keyword){
                     $query->where('describe',$keyword)->orWhere('effect',$keyword);
                 });
+            }else if(!empty($data['improve'])){
+                $list = $list->where('improve',$data['improve']); //改善
+            }else if(!empty($data['deteriorate'])){
+                $list = $list->where('deteriorate',$data['deteriorate']); //恶化
+            }else if(!empty($data['theory'])){
+                $list = $list->where('theory',$data['theory']); //创新理论
             }
+            
         isset($data['limit']) ? $list = $list->paginate($data['limit']) : $list = $list->paginate(10) ;
         return $list;
     }

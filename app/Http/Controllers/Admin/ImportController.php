@@ -165,22 +165,22 @@ class ImportController extends Controller {
     public function typelist(){
         $list = DB::table('import_type')->get();
         $list = json($list);
-        $data = [];
+      
         foreach($list as $k=>$v){
             if($v['type'] == 1){
-                $data['theory'][$k] = $v;
+                $data['theory'][$v['id']] = $v;
             } else if($v['type'] == 2){
-                $data['type'][$k] = $v;
+                $data['type'][$v['id']] = $v;
             }else if($v['type'] == 3){
-                $data['invention'][$k] = $v;
+                $data['invention'][$v['id']] = $v;
             }else if($v['type'] == 4){
-                $data['separate'][$k] = $v;
+                $data['separate'][$v['id']] = $v;
             }else if($v['type'] == 5){
-                $data['rule'][$k] = $v;
+                $data['rule'][$v['id']] = $v;
             }else if($v['type'] == 6){
-                $data['use'][$k] = $v;
+                $data['use'][$v['id']] = $v;
             }else{
-                $data['server'][$k] = $v;
+                $data['server'][$v['id']] = $v;
             }
         }
         rData(successcode()['1']['code'],successcode()['1']['msg'],$data);
