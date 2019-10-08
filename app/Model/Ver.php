@@ -11,7 +11,7 @@ class Ver extends Model{
     }
 
     public static function VerificationList(){
-        $res = DB::table('verification')->get();
+        $res = DB::table('verification')->select('name as label','pid as value','id')->get();
         $res = self::Listpid($res,0);
         return $res;
     }
@@ -20,8 +20,11 @@ class Ver extends Model{
         $tree = [];
         $arr = json($arr);
         foreach ($arr as $k=>$v){
-            if ($v['pid'] == $pid){
-                $v['son'] = self::Listpid($arr,$v['id']);
+            if ($v['value'] == $pid){
+                $v['children'] = self::Listpid($arr,$v['id']);
+                if(empty($v['children'])){
+                    unset($v['children']);
+                }
                 $tree[] = $v;
            }
        }

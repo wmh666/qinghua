@@ -61,10 +61,16 @@ class Login extends Model{
     //分配账号
     public static function useradd($data){
         date_default_timezone_set ('PRC'); 
-        $data['password'] = MD5(123456);
-        $data['addtime'] = date('Y-m-d H:i:s');
-        $res = DB::table('userinfo')->insert($data);
-        return $res;
+        $userfind = DB::table('userinfo')->where('name',$data['name'])->orWhere('tel',$data['tel'])->first();
+        $userfind = json($userfind);
+        if(empty($userfind)){
+            $data['password'] = MD5(123456);
+            $data['addtime'] = date('Y-m-d H:i:s');
+            $res = DB::table('userinfo')->insert($data);
+            return $res;
+        }else{
+            return '-1';
+        }
     }
 
     //找回密码验证信息

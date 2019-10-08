@@ -50,8 +50,8 @@ class Import extends Model
     }
 
     public static function principle($data){
-
-        //$data['data'] = ['抽取','合并（需求属性合并）','合并（需求属性合并）']; 
+        //$data['data'] = ['抽取','合并（需求属性合并）','合并（需求属性合并）'];
+        $data['data'] = explode(',',$data['data']);
         $list = DB::table('case')
             ->whereIn($data['surface'],$data['data'])
             ->select('describe','impletime','effect','id'); //默认搜索 /分离原理 /进化法则
@@ -69,9 +69,9 @@ class Import extends Model
                 $keyword = $data['keyword'];
                 $list = $list ->where(function ($query) use ($keyword){
                     $query->where('describe',$keyword)->orWhere('effect',$keyword);
-                })->get();
+                });
             }
-            $list = $list ->paginate(10);
+            $list = $list->paginate(10);
         return $list;
     }
 
