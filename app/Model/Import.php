@@ -73,7 +73,11 @@ class Import extends Model
             }else if(!empty($data['theory'])){
                 $list = $list->where('theory',$data['theory']); //创新理论
             }
-            
+           
+            if(empty($data['surface'])){
+               empty($data['sort']) ? $sort = 'asc' : $sort = $data['sort'];
+                $list = $list->orderBy('impletime',$sort);
+            }
         isset($data['limit']) ? $list = $list->paginate($data['limit']) : $list = $list->paginate(10) ;
         return $list;
     }
