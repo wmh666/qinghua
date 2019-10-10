@@ -47,5 +47,6 @@ Route::post('/pc/principle', 'Admin\ImportController@principle');// 各种原理
 Route::post('/pc/principlelist', 'Admin\ImportController@principlelist');// 各种原理详情
 Route::GET('/pc/principleExport', 'Admin\ImportController@principleExport');// 各种原理导出
 Route::post('/pc/upcaseImg', 'Admin\ImportController@upcase_img');// 修改图片
+Route::GET('/pc/exportcount', 'Admin\ImportController@exportcount');// 案例统计导出
 
 

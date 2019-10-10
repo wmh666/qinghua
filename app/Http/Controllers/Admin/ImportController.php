@@ -342,5 +342,31 @@ class ImportController extends Controller {
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);
     }
 
+    //导出统计
+    public function exportcount(Request $request){
+        $data = $request->all();
+        $list = Import::exportcount($data);
+        $datalist = $this->countdata($list);
+        $header = ['年份','数量'];
+        $count = count($list);
+        for($i=1; $i<=ceil($count); $i++){
+            $start = ($i*2-2+1)-1;
+            $end = 2;        
+            $article = array_slice($datalist,$start,$end);
+            csv_export($article,$header,'test.csv',$i);
+        }
+    }
+
+    public function countdata($list){
+        $item = [];
+        foreach($list as $k=>$v){
+            $data = [];
+            $data['year'] = $v['impletime'];
+            $data['count'] = $v['count'];
+            $item[] = $data;
+        }
+        return  $item;
+    }   
+
 
 }

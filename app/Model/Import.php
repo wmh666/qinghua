@@ -83,7 +83,29 @@ class Import extends Model
     }
 
     public static function principlelist($id){
-        $list = DB::table('case')->where('id',$id)->select('self','invention','separate','rule','use','id')->first();
+        $list = DB::table('case')->where('id',$id)->select('self','invention','separate','rule','use','id')->get();
+        return $list;
+    }
+
+    public static function exportcount($data){
+        //行业类型
+        $list = DB::table('case')->select(DB::raw('count(1) as count, impletime'));
+        if(!empty($data['industry'])){
+            $in = $data['industry'];
+            $list = $list->whereraw('substr(industry,1,3) in '."('$in')");
+        }else if(!empty($data['country'])){
+            $list = $list->where('country',$data['country']);
+        }else if(!empty($data['invention'])){
+            $list = $list->where('invention',$data['invention']);
+        }else if(!empty($data['separate'])){
+            $list = $list->where('separate',$data['separate']);
+        }else if(!empty($data['rule'])){
+            $list = $list->where('rule',$data['rule']);
+        }else if(!empty($data['use'])){
+            $list = $list->where('use',$data['use']);
+        }
+        $list = $list->groupby('impletime')->get();
+        $list = json($list);
         return $list;
     }
 }
