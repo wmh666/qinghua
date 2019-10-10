@@ -13,11 +13,7 @@ class Import extends Model
         $list = $list ->paginate(10);
         $list = json($list);
         foreach($list['data'] as $k=>$v){
-            if(!empty($v['img'])){
-                $list['data'][$k]['img'] = explode(',',$v['img']);
-            }else{
-                $list['data'][$k]['img'] = [];
-            }
+            $list['data'][$k]['img'] = DB::table('case_img')->where('case_id',$v['id'])->get();
         }
         return $list;
     }

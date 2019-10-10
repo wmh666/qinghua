@@ -60,7 +60,7 @@ class LoginController extends Controller {
             rData(errorcode()['18']['code'],errorcode()['18']['msg']);
         }
         $res = Login::useradd($data);
-        if($res != '-1')
+        if($res != -1)
             rData(successcode()['1']['code'],successcode()['1']['msg']);
         else
             rData(errorcode()['19']['code'],errorcode()['19']['msg']);

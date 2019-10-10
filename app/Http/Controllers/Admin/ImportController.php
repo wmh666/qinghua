@@ -93,11 +93,11 @@ class ImportController extends Controller {
 
     //上传文件
     public function importfile(Request $requests){
-        $data = $requests->all();
+        $data = $requests->input('img');
         if(empty($data)){
             rData(errorcode()['6']['code'],errorcode()['6']['msg']);
         }
-        $res = DB::table('case')->where('id',$data['id'])->update(['img'=>$data['img']]);
+        $res = DB::table('case_img')->insert($data);
         if($res)
             rData(successcode()['1']['code'],successcode()['1']['msg']);
         else
@@ -331,5 +331,16 @@ class ImportController extends Controller {
         $list = json($list);
         csv_export($list,$header,'test.csv',0);
     }
+
+    //案例修改接口
+    public function upcase_img(Request $request){
+        $data = $request->all();
+        $res = DB::table('case_img')->where('id',$data['id'])->update(['img'=>$data['img']]);
+        if($res)
+            rData(successcode()['1']['code'],successcode()['1']['msg']);
+        else
+            rData(errorcode()['8']['code'],errorcode()['8']['msg']);
+    }
+
 
 }

@@ -24,7 +24,7 @@ Route::post('/pc/VerIns', 'Admin\VerController@VerificationIns');//验证add
 Route::post('/pc/Verlist', 'Admin\VerController@VerificationList');//验证list
 Route::post('/pc/inf', 'Admin\VerController@information');//信息添加
 Route::post('/pc/file', 'Admin\VerController@addfile');//文件添加
-Route::post('/pc/download', 'Admin\VerController@downloadfile');//文件xiazai
+Route::GET('/pc/download', 'Admin\VerController@downloadfile');//文件xiazai
 Route::post('/pc/inflist', 'Admin\VerController@inflist');//信息列表
 Route::post('/pc/listimport', 'Admin\ImportController@listimport');//anli列表
 Route::post('/pc/importfile', 'Admin\ImportController@importfile');//anli列表 上传文件
@@ -46,5 +46,6 @@ Route::post('/pc/casecount', 'Admin\ImportController@casecount');// 案例统计
 Route::post('/pc/principle', 'Admin\ImportController@principle');// 各种原理
 Route::post('/pc/principlelist', 'Admin\ImportController@principlelist');// 各种原理详情
 Route::GET('/pc/principleExport', 'Admin\ImportController@principleExport');// 各种原理导出
+Route::post('/pc/upcaseImg', 'Admin\ImportController@upcase_img');// 修改图片
 
 
