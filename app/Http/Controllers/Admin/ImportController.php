@@ -257,7 +257,7 @@ class ImportController extends Controller {
      //QFD 交叉关系 临时html 关系
      public function qfdlist(Request $request){ 
         $data = $request->all();
-        $list['html'] = DB::table('html')->where('id',$data['html_id'])->where('uid',$data['uid'])->select('html')->get();
+        $list['html'] = DB::table('html')->where('id',$data['html_id'])->where('uid',$data['uid'])->select('html','id as htmlid')->get();
         if(!empty($data['title'])){
             $keyword = $data['title'];
             $list['over'] = DB::table('over')
