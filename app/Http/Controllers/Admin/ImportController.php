@@ -6,7 +6,6 @@ use App\Model\Import;
 use Illuminate\Http\Request;
 use Excel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\input;
 class ImportController extends Controller {
 
     public function import(Request $requests){
@@ -192,7 +191,7 @@ class ImportController extends Controller {
     //0 swot分析 , 1 共情图 ，2 服务 3 QFD 4商业模式
     public function map(Request $request){
         date_default_timezone_set ('PRC'); 
-        $data=Input::all();
+        $data = $request->all();
         if(empty($data['img']) || !is_numeric($data['type']) || empty($data['uid'])){
             rData(errorcode()['6']['code'],errorcode()['6']['msg']);
         }
@@ -208,7 +207,7 @@ class ImportController extends Controller {
     //历史 0 swot分析 , 1 共情图 ，2 服务 3 QFD 4 商业模式
     public function mapHisory (Request $requests){
         $data = $requests->all();
-        $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime','id')->get();
+        $list = DB::table('map')->where('type',$data['type'])->where('uid',$data['uid'])->select('addtime','id')->orderBy('addtime','desc')->get();
         rData(successcode()['1']['code'],successcode()['1']['msg'],$list);
     }
 
@@ -246,8 +245,8 @@ class ImportController extends Controller {
 
      //QFD 交叉关系
      public function qfdover(Request $request){
-        $data = $request->all();
-        $res = DB::table('over')->insertGetId($data);
+        $data = $request->input('data');
+        $res = DB::table('over')->insert($data);
         if($res)
             rData(successcode()['1']['code'],successcode()['1']['msg']);
         else
@@ -265,7 +264,8 @@ class ImportController extends Controller {
                     ->where('uid',$data['uid'])
                     ->where('htmlid',$data['htmlid'])
                     ->where(function ($query) use ($keyword){
-                        $query->where('title',$keyword)->orWhere('relationship',$keyword);
+                        //$query->where('title',$keyword)->orWhere('relationship',$keyword);
+                        $query->where('title',$keyword);
                     })->get();
         }
          rData(successcode()['1']['code'],successcode()['1']['msg'],$list);

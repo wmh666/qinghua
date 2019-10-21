@@ -64,7 +64,7 @@ class Import extends Model
             }else if(!empty($data['keyword'])){
                 $keyword = $data['keyword'];
                 $list = $list ->where(function ($query) use ($keyword){
-                    $query->where('describe',$keyword)->orWhere('effect',$keyword);
+                    $query->where('describe','like',"%$keyword%")->orWhere('effect','like',"%$keyword%");
                 });
             }else if(!empty($data['improve'])){
                 $list = $list->where('improve',$data['improve']); //改善
@@ -72,6 +72,8 @@ class Import extends Model
                 $list = $list->where('deteriorate',$data['deteriorate']); //恶化
             }else if(!empty($data['theory'])){
                 $list = $list->where('theory',$data['theory']); //创新理论
+            }else if(!empty($data['impletime'])){
+                $list = $list->where('impletime',$data['impletime']); //时间
             }
            
             if(empty($data['surface'])){
