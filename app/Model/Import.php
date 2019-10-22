@@ -66,8 +66,8 @@ class Import extends Model
                 $list = $list ->where(function ($query) use ($keyword){
                     $query->where('describe','like',"%$keyword%")->orWhere('effect','like',"%$keyword%");
                 });
-            }else if(!empty($data['theory'])){
-                $list = $list->where('theory',$data['theory']); //创新理论
+            }else if(!empty($data['invention'])){
+                $list = $list->where('invention',$data['invention']); //创新理论
             }else if(!empty($data['impletime'])){
                 $list = $list->where('impletime',$data['impletime']); //时间
             }
@@ -81,7 +81,7 @@ class Import extends Model
     }
 
     public static function principlelist($id){
-        $list = DB::table('case')->where('id',$id)->select('self','invention','separate','rule','use','id')->get();
+        $list = DB::table('case')->where('id',$id)->get();
         return $list;
     }
 
