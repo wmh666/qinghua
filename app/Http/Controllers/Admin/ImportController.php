@@ -184,10 +184,6 @@ class ImportController extends Controller {
         }
         rData(successcode()['1']['code'],successcode()['1']['msg'],$data);
     }
-
-    public function aa(Request $request){
-        
-    }
     //0 swot分析 , 1 共情图 ，2 服务 3 QFD 4商业模式
     public function map(Request $request){
         date_default_timezone_set ('PRC'); 
@@ -398,4 +394,22 @@ class ImportController extends Controller {
        
     }
 
+    public function mt(Request $request){
+        $data = $request->all();
+        if(!empty($data['deteriorate']) && !empty($data['improve'])){
+            $a = DB::table('a')->where('title',$data['improve'])->where('left',$data['deteriorate'])->value('fen');
+            $b = DB::table('a')->where('title',$data['deteriorate'])->where('left',$data['improve'])->value('fen');
+            $a = trim($a," ");
+            $b = trim($b," ");
+            $idsa = explode(',',$a);
+            $idsb = explode(',',$b);
+            $ids = array_merge($idsa,$idsb);
+           foreach($ids as $k=>$v){
+                $item[] = (int) $v;
+           }
+            $t = DB::table('t')->whereIn('sn',$item)->select('name')->get();
+            rData(successcode()['1']['code'],successcode()['1']['msg'],$t);
+        }
+       
+    }
 }

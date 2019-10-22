@@ -50,3 +50,6 @@ Route::post('/pc/upcaseImg', 'Admin\ImportController@upcase_img');// 修改图�
 Route::GET('/pc/exportcount', 'Admin\ImportController@exportcount');// 案例统计导出
 Route::GET('/pc/test', 'Admin\ImportController@test');// 案例统计导出
 
+Route::POST('/pc/a', 'Admin\ImportController@a');// 案例统计导出
+Route::POST('/pc/mt', 'Admin\ImportController@mt');// mt
+

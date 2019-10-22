@@ -47,7 +47,7 @@ class Import extends Model
 
     public static function principle($data){
         $list = DB::table('case')
-            ->select('describe','impletime','effect','id'); //默认搜索 /分离原理 /进化法则
+            ->select('describe','impletime','effect','id','extername'); //默认搜索 /分离原理 /进化法则
             if(!empty($data['surface'])){
                 $data['data'] = explode(',',$data['data']);
                 $list = $list->whereIn($data['surface'],$data['data']);
@@ -66,10 +66,6 @@ class Import extends Model
                 $list = $list ->where(function ($query) use ($keyword){
                     $query->where('describe','like',"%$keyword%")->orWhere('effect','like',"%$keyword%");
                 });
-            }else if(!empty($data['improve'])){
-                $list = $list->where('improve',$data['improve']); //改善
-            }else if(!empty($data['deteriorate'])){
-                $list = $list->where('deteriorate',$data['deteriorate']); //恶化
             }else if(!empty($data['theory'])){
                 $list = $list->where('theory',$data['theory']); //创新理论
             }else if(!empty($data['impletime'])){
