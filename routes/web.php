@@ -52,4 +52,6 @@ Route::GET('/pc/test', 'Admin\ImportController@test');// 案例统计导出
 
 Route::POST('/pc/a', 'Admin\ImportController@a');// 案例统计导出
 Route::POST('/pc/mt', 'Admin\ImportController@mt');// mt
+Route::POST('/pc/htmldata', 'Admin\ImportController@htmldata');// htmldata
+Route::POST('/pc/htmllist', 'Admin\ImportController@htmldatalist');// htmllist
 

@@ -260,7 +260,6 @@ class ImportController extends Controller {
                     ->where('uid',$data['uid'])
                     ->where('htmlid',$data['htmlid'])
                     ->where(function ($query) use ($keyword){
-                        //$query->where('title',$keyword)->orWhere('relationship',$keyword);
                         $query->where('title',$keyword);
                     })->get();
         }
@@ -367,31 +366,7 @@ class ImportController extends Controller {
 
     
     public function test(){
-        $json = '[{"top":["20","100","100"],"left":["20","100","100"],"width":["20","100","100"],"height":["20","100","100"],"angle":["20","11","11"],"viewName":"img","isInput":"false"},{"top":["100","100"],"left":["100","100"],"fontSize":["100","100"],"angle":["100","100"],"viewName":"input","isInput":"true"},{"top":["20","20"],"left":["20","20"],"fontSize":["20","20"],"angle":["20","20"],"text":["20","20"],"viewName":"text","isInput":"false"}]';        
-        $json = json_decode($json,true);
-        $item['component'] = [];
-        $item['image'] = '1111';
-        foreach($json as $k=>$v){
-            foreach($v['top'] as $k1=>$v1){
-                $data = [];
-                $data['top'] = $v['top'][$k1];
-                $data['left'] = $v['left'][$k1];
-                if(isset($v['width']) && isset($v['height'])){
-                    $data['width'] = $v['width'][$k1];
-                    $data['height'] = $v['height'][$k1];
-                }
-                if(isset($v['text']) && isset($v['fontSize'])){
-                    $data['text'] = $v['text'][$k1];
-                    $data['fontSize'] = $v['fontSize'][$k1];
-                }
-                $data['angle'] = $v['angle'][$k1];
-                $data['viewName'] = $v['viewName'];
-                $data['isInput'] = $v['isInput'];
-                $item['component'][] = $data;
-            }
-        }
-        rData(successcode()['1']['code'],successcode()['1']['msg'],$item);
-       
+      
     }
 
     public function mt(Request $request){
@@ -411,5 +386,21 @@ class ImportController extends Controller {
             rData(successcode()['1']['code'],successcode()['1']['msg'],$t);
         }
        
+    }
+
+    public function htmldata(Request $request){
+        $data = $request->all();
+        $t = DB::table('htmldata')->insertGetId(['htmldata'=>$data['title'],'uid'=>$data['uid']]);
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$t);
+
+    }
+
+    public function htmldatalist(Request $request){
+        $data = $request->all();
+        $t = DB::table('htmldata')->where('id',$data['id'])->where('uid',$data['uid'])->first();
+        $list = json($t);
+        $item[] = explode(',',$list['htmldata']);
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$item);
+
     }
 }
