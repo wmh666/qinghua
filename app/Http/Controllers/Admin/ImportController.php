@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Import;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 class ImportController extends Controller {
 
@@ -366,7 +367,14 @@ class ImportController extends Controller {
 
     
     public function test(){
-      
+        $code = rand(111111,999999);
+        $content =  '您的验证码为:'.$code.'请在5分钟内使用'; 
+        $to = '205251076@qq.com';
+        $subject = '邮箱验证';
+        Mail::raw($content,function ($message) use($to, $subject) { 
+                $message->to($to)->subject($subject); 
+            }
+        );
     }
 
     public function mt(Request $request){
