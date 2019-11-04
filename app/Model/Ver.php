@@ -45,15 +45,9 @@ class Ver extends Model{
     //列表
     public static function inflist($data){
         $list = DB::table('information');
-        if(is_numeric($data['vid1'])){
-           $list = $list->where('vid1',$data['vid1']);
+        if(!empty($data['service'])){
+            $list = $list->where('service','like',"%$data[service]%");
         }
-        if(is_numeric($data['vid2'])){
-            $list = $list->where('vid2',$data['vid2']);
-         }
-         if(is_numeric($data['vid3'])){
-            $list = $list->where('vid3',$data['vid3']);
-         }
         $list = $list->select('id','ordername','type','scene','server','addtime')->paginate(6);
         return $list;
     }

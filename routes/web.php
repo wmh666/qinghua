@@ -55,3 +55,6 @@ Route::POST('/pc/mt', 'Admin\ImportController@mt');// mt
 Route::POST('/pc/htmldata', 'Admin\ImportController@htmldata');// htmldata
 Route::POST('/pc/htmllist', 'Admin\ImportController@htmldatalist');// htmllist
 
+Route::GET('/pc/email', 'Admin\ImportController@email');// email
+Route::POST('/pc/delimg', 'Admin\ImportController@delimg');// delimg
+

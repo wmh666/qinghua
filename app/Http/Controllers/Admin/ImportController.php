@@ -367,14 +367,6 @@ class ImportController extends Controller {
 
     
     public function test(){
-        $code = rand(111111,999999);
-        $content =  '您的验证码为:'.$code.'请在5分钟内使用'; 
-        $to = '205251076@qq.com';
-        $subject = '邮箱验证';
-        Mail::raw($content,function ($message) use($to, $subject) { 
-                $message->to($to)->subject($subject); 
-            }
-        );
     }
 
     public function mt(Request $request){
@@ -409,6 +401,34 @@ class ImportController extends Controller {
         $list = json($t);
         $item[] = explode(',',$list['htmldata']);
         rData(successcode()['1']['code'],successcode()['1']['msg'],$item);
+
+    }
+
+    public  function email(Request $request){
+        $email = $request->input('email');
+        $code = rand(111111,999999);
+        $content =  '您的验证码为:'.$code.'请在5分钟内使用'; 
+        $subject = '邮箱验证';
+        Mail::raw($content,function ($message) use($email, $subject) { 
+                $message->to($email)->subject($subject); 
+            }
+        );
+        $find = DB::table('user_code')->where('email',$email)->first();
+        $res = json($find);
+        if(!empty($res['code'])){
+            DB::table('user_code')->where('email',$email)->update(['email'=>$email,'code'=>$code,'addtime'=>time()+300]);
+        }else{
+            DB::table('user_code')->insert(['email'=>$email,'code'=>$code,'addtime'=>time()+300]);
+        }
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$code);
+
+    }
+
+    //删除生成图片
+    public function delimg(Request $request){
+        $id = $request->input('id');
+        $res = DB::table('map')->where('id',$id)->delete();
+        rData(successcode()['1']['code'],successcode()['1']['msg'],$res);
 
     }
 }

@@ -41,7 +41,7 @@ class Login extends Model{
         $list = DB::table('userinfo')
             ->join('role', 'userinfo.role', '=', 'role.id')
             ->where('role','<>',1)
-            ->select('userinfo.id','tel','addtime','userinfo.name','role.rolename','name')
+            ->select('userinfo.id','tel','addtime','userinfo.name','role.rolename','name','userinfo.email')
             ->paginate(10);
         return $list;
     }
@@ -75,14 +75,14 @@ class Login extends Model{
 
     //找回密码验证信息
     public static function relist($data){
-        $res = DB::table('userinfo')->where('tel',$data['tel'])->where('name',$data['name'])->first();
+        $res = DB::table('userinfo')->where('tel',$data['tel'])->where('email',$data['email'])->where('password',$data['oldpwd'])->first();
         if(empty($res)){
-            return 1;
+            return 0;
         }
     }
     //找回密码
     public static function repwd ($data){
-        $res = DB::table('userinfo')->where('tel',$data['tel'])->where('name',$data['name'])->update(['password'=>$data['new_pwd']]);
+        $res = DB::table('userinfo')->where('tel',$data['tel'])->where('email',$data['email'])->update(['password'=>$data['new_pwd']]);
         return $res;
     }
 

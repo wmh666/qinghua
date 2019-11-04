@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Model\Login;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 class LoginController extends Controller {
     //登录
     public function login(Request $Request){
@@ -52,7 +53,7 @@ class LoginController extends Controller {
     //分配账号
     public function useradd(Request $Request){
         $data = $Request->all();
-        if(empty($data['name']) || empty($data['tel']) || empty($data['role'])){
+        if(empty($data['name']) || empty($data['tel']) || empty($data['role']) || empty($data['email'])){
             rData(errorcode()['6']['code'],errorcode()['6']['msg']);
         }
         $Mobile = isMobile($data['tel']);
@@ -71,8 +72,16 @@ class LoginController extends Controller {
     public function repwd(Request $Request){
 
         $data = $Request->all();
-        if(empty($data['pwd']) || empty($data['new_pwd']) || empty($data['name']) || empty($data['tel'])){
+        if(empty($data['pwd']) || empty($data['new_pwd']) || empty($data['oldpwd']) || empty($data['tel']) || empty($data['email'])  || empty($data['code'])){
             rData(errorcode()['6']['code'],errorcode()['6']['msg']);
+        }
+        $find = DB::table('user_code')->where('email',$data['email'])->first();
+        $find = json($find);
+        if($data['code'] != $find['code']){
+            rData(errorcode()['15']['code'],errorcode()['15']['msg']);
+        }
+        if(time()>$find['addtime']){
+            rData(errorcode()['20']['code'],errorcode()['20']['msg']);
         }
         if($data['pwd'] != $data['new_pwd']){
             rData(errorcode()['16']['code'],errorcode()['16']['msg']);
