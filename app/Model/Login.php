@@ -33,6 +33,7 @@ class Login extends Model{
     //个人信息
     public static function findlist($tel,$role){
         $user = DB::table('userinfo')->where('tel',$tel)->where('role',$role)->select('id','tel','role','addtime','name')->first();
+        DB::table('userinfo')->where('tel',$tel)->where('role',$role)->update(['addtime'=>date('Y-m-d H:i:s')]);
         return $user;
     }
 
