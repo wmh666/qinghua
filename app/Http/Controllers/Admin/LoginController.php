@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Model\Login;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 class LoginController extends Controller {
     //登录
     public function login(Request $Request){
@@ -100,6 +101,20 @@ class LoginController extends Controller {
             rData(successcode()['1']['code'],successcode()['1']['msg']);
         else
             rData(errorcode()['8']['code'],errorcode()['8']['msg']);      
+    }
+
+    //邮箱预约
+    public  function email(Request $request){
+        $mobile = $request->input('mobile');
+        $username = $request->input('username');
+        $email = 'cfm1993@163.com';
+        $content =  '新用户预约 预约人：'.$username.'  预约电话：'.$mobile; 
+        $subject = '新用户预约注册';
+        Mail::raw($content,function ($message) use($email, $subject) { 
+                $message->to($email)->subject($subject); 
+            }
+        );
+        rData(successcode()['1']['code'],successcode()['1']['msg']);
     }
     
 }

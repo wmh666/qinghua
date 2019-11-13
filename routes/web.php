@@ -57,4 +57,5 @@ Route::POST('/pc/htmllist', 'Admin\ImportController@htmldatalist');// htmllist
 
 Route::GET('/pc/email', 'Admin\ImportController@email');// email
 Route::POST('/pc/delimg', 'Admin\ImportController@delimg');// delimg
+Route::GET('/pc/yuemail', 'Admin\LoginController@email');// delimg
 
