@@ -243,7 +243,33 @@ class ImportController extends Controller {
      //QFD 交叉关系
      public function qfdover(Request $request){
         $data = $request->input('data');
-        $res = DB::table('over')->insert($data);
+        $null = [];
+        foreach($data as $k=>$v){
+            if(empty($v['fraction'])){
+                $datanull = [];
+                $datanull['relationship'] = $v['relationship'];
+                $datanull['title'] = $v['title'];
+                $datanull['fraction'] = $v['fraction'];
+                $datanull['uid'] = $v['uid'];
+                $datanull['htmlid'] = $v['htmlid'];
+                $null[] = $datanull;
+                unset($data[$k]);
+            }
+            
+        }
+        foreach($null as $nk =>$nv){
+            foreach($data as $k=>$v){
+                if($nv['title'] == $v['title'] && $nv['relationship'] == $v['relationship']){
+                    $null[$nk]['fraction'] = $v['fraction'];
+                }
+
+                if($nv['title'] == $v['relationship'] && $nv['relationship'] == $v['title']){
+                    $null[$nk]['fraction'] = $v['fraction'];
+                }
+            }
+        }
+        $array = array_merge($null,$data);
+        $res = DB::table('over')->insert($array);
         if($res)
             rData(successcode()['1']['code'],successcode()['1']['msg']);
         else

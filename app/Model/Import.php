@@ -36,7 +36,7 @@ class Import extends Model
         }else if(!empty($data['use'])){
             $list = $list->where('use',$data['use']);
         }
-        $list = $list->groupby('impletime')->get();
+        $list = $list->groupby('impletime')->orderby('impletime','asc')->get();
         $list = json($list);
         $data = [];
         foreach($list as $k=>$v){
@@ -102,7 +102,7 @@ class Import extends Model
         }else if(!empty($data['use'])){
             $list = $list->where('use',$data['use']);
         }
-        $list = $list->groupby('impletime')->get();
+        $list = $list->groupby('impletime')->orderby('impletime','asc')->get();
         $list = json($list);
         return $list;
     }
